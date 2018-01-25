@@ -1,3 +1,4 @@
+#-*- coding:uft-8 -*-
 from support import create_app, db
 from flask_script import Manager
 

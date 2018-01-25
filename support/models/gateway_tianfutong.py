@@ -1,11 +1,11 @@
 from .. import db
-from ..import utils
+from utils import to_datetime
 
 class Param(db.Model):
     __tablename__ = 'common_info'
-    
-    common_info_id
-    device_id
+
+    common_info_id = db.Column(db.Integer, primary_key=True)
+    device_id = db.Column(db.Integer, )
     biz_serial_no
     imei
     cplc

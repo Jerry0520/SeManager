@@ -7,11 +7,11 @@ from flask_excel import init_excel
 
 db = SQLAlchemy()
 security = Security()
-admin = Admin(name= u'ÕË»§¹ÜÀí')
+admin = Admin(name= u'ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½')
 
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config_name)
     db.init_app(app)
-    
+
     return app
