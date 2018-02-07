@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
+from flask import current_app
 from datetime import datetime
 from flask_security import UserMixin, RoleMixin
-from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature, SignatureExpired
+from itsdangerous import TimedJSONWebSignatureSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_httpauth import HTTPTokenAuth
 from support import db
+
+
+auth = HTTPTokenAuth()
 
 roles_users = db.Table('roles_users',
                        db.Column('users', db.Integer, db.ForeignKey('user.id')),
@@ -19,7 +24,7 @@ class User(db.Model, UserMixin):
     nickname = db.Column(db.String(50), nullable=False, default='')
     password_hash = db.Column(db.String(255), nullable=False)
     mobile = db.Column(db.String(255), nullable=False)
-    active = db.Column(db.Boolean, nullable=False, default='1')
+    active = db.Column(db.Boolean, nullable=False, default=1)
     confirmed_at = db.Column(db.DateTime(), default=datetime.now())
     last_login_at = db.Column(db.DateTime())
     login_count = db.Column(db.Integer, default=0)
@@ -34,27 +39,25 @@ class User(db.Model, UserMixin):
         raise AttributeError('password is not a readable attribute')
     
     @password.setter
-    def password_setter(self, password):
-        self.hash_password = generate_password_hash(password)
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
         
     def verify_password(self, password):
-        return check_password_hash(self.hash_password, password)
+        return check_password_hash(self.password_hash, password)
     
     def generate_auth_token(self, expiration= 6000):
-        s = TimedJSONWebSignatureSerializer(config[os.getenv('FLASK_CONFIG') or 'default'].SECRET_KEY, expires_in= expiration)
+        s = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'], expires_in= expiration)
         return s.dumps({"username":self.username})
     
-    @staticmethod
+    @auth.verify_token
     def verify_auth_token(token):
-        s = TimedJSONWebSignatureSerializer(config[os.getenv('FLASK_CONFIG') or 'default'].SECRET_KEY)
+        s = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'])
         try:
-            s.loads(token)
-        except BadSignature:
+            data = s.loads(token)
+        except:
             return False
-        except SignatureExpired:
-            return False
-        data = User.query.filter_by(username= data['username']).first()
-        if data ==None:
+        data_username = User.query.filter_by(username= data['username']).first()
+        if data_username ==None:
             return False
         return True
 

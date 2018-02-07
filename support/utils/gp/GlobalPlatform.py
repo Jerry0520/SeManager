@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from .swapApdu import LV
 from .Encryption import Encryption
-from ..contants import dict_isd_key
+from support.utils.contants import dict_isd_key
 
 encryption = Encryption()
 
@@ -18,7 +18,7 @@ class gp():
 
                         APDU = '80E4' + P1 + P2 + LV(AID + '0000')+'4F'+ LV(AID) + AID                        
                 elif CLA == '84':
-                        APDU = '84E4' + P1 + P2 + LV(DATA + '00000000000000000000') +'4F'+ LV(AID) + AID   
+                        APDU = '84E4' + P1 + P2 + LV(AID + '00000000000000000000') +'4F'+ LV(AID) + AID   
                         MAC = encryption.MAC_SingleDESPlusTriDes_8Bytes(random, APDU, DES3key)
                         APDU += MAC
  
@@ -117,9 +117,9 @@ class gp():
                 
                 CLA = self.CLA
                 if CLA =='80':
-                        APDU = CLACLAFree + '80D8' + P1 + P2 + LV(DATA) + DATA
+                        APDU = '80D8' + P1 + P2 + LV(DATA) + DATA
                 elif CLA == '84':
-                        APDU = CLASecur + '84D8' + P1 + P2 + LV(DATA + '0000000000000000') + DATA
+                        APDU = '84D8' + P1 + P2 + LV(DATA + '0000000000000000') + DATA
                         MAC = encryption.MAC_SingleDESPlusTriDes_8Bytes(random, APDU, DES3key)
                         APDU += MAC
 
@@ -146,9 +146,9 @@ class gp():
                 
                 CLA = self.CLA
                 if CLA =='80':
-                        APDU = CLACLAFree + '80F0' + P1 + P2 + LV(DATA) + DATA
+                        APDU = '80F0' + P1 + P2 + LV(DATA) + DATA
                 elif CLA == '84':
-                        APDU = CLASecur + '84F0' + P1 + P2 + LV(DATA + '0000000000000000') + DATA
+                        APDU = '84F0' + P1 + P2 + LV(DATA + '0000000000000000') + DATA
                         MAC = encryption.MAC_SingleDESPlusTriDes_8Bytes(random, APDU, DES3key)
                         APDU += MAC
 
@@ -255,7 +255,7 @@ if __name__ == '__main__':
         gp = gp()
         KENC, KMAC, KDEK = gp.initkey('12345678123456781234567812345678')
         hostCryptogram, S_ENC, S_DEK, S_MAC = gp.gpexternalauthenticate('0000000000000000000020020005765C6F76257B31C479DAF06699B7', KENC, KMAC, KDEK)
-        eaAPDU = gp.externalauthenticateCommad(P1='01', P2='00', data=hostCryptogram, random='0000000000000000', DES3key=S_MAC)
+        eaAPDU = gp.externalauthenticateCommad(P1='01', P2='00', DATA=hostCryptogram, random='0000000000000000', DES3key=S_MAC)
         #response,sw1,sw2,mac = gp.gpexternalauthenticate('D1560001010001600000000100000000','01','00','E4019B61187698B7F859558ADEC39DDD','E4019B61187698B7DD346BE2996661A6','E4019B61187698B756000BFA30E20762')
         #response,sw1,sw2 = gp.installCommand('84', '80', '00', '1122334455667788', 'D87B11926004FAA9', 'cf79017f86fe59d6de677cf1ea97dca1')
         #response,sw1,sw2 = deleteCommand(connection, '84', '80', '00', '1122334455667788', 'D87B11926004FAA9', 'cf79017f86fe59d6de677cf1ea97dca1') 

@@ -4,7 +4,7 @@ from support import create_app, db
 from flask_script import Manager,Shell
 from flask_migrate import Migrate, MigrateCommand
 from support.models.users import User, Role, roles_users
-app = create_app('config')
+app = create_app('default')
 manager = Manager(app)
 migrate = Migrate(app, db)
 

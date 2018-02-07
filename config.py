@@ -2,23 +2,31 @@
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+class Config:
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-SQLALCHEMY_TRACK_MODIFICATIONS = True
-SQLALCHEMY_ECHO = False
+    # CSRF
+    #CSRF_ENABLED = True
+    SECRET_KEY = 'nrebojisvdjopsdjvdfbjdldfvsji'
 
-# CSRF
-#CSRF_ENABLED = True
-SECRET_KEY = 'nrebojisvdjopsdjvdfbjdldfvsji'
+    # Flask-User settings
+    USER_APP_NAME = "Tech_Support"
 
-# salt
-SECURITY_PASSWORD_HASH = 'pbkdf2_sha512'
-SECURITY_PASSWORD_SALT = 'nrebojisvdjopsdjvdfbjdldfvsji'
-PASSWORD_SINGLE_HASH=False
-# ����ע�� register���ݲ���Ҫ�ʼ�ȷ��
-SECURITY_REGISTERABLE = True
-SECURITY_SEND_REGISTER_EMAIL = False
+    @staticmethod
+    def init_app(app):
+        pass
 
-# Flask-User settings
-USER_APP_NAME = "Tech_Support"
+
+class TestingConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.test.sqlite')
+    
+class ProductConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')   
+
+config = {
+    'testing':TestingConfig,
+    'product':ProductConfig,
+    'default':TestingConfig,
+} 
+    

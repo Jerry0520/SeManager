@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask import jsonify, session
 from flask_restful import Resource, marshal_with, fields, reqparse
-from ..models.users import User, Role, SupportInfo
+from ..models.users import User, Role, SupportInfo, auth
 from ..models.applets import CapPerso, CapPkgInfo, BlackList, WhiteList, CapCfg
-from .. import db
+from support import db
 from ..utils.contants import dict_isd_key, dict_perso_status, dict_cap_status
 from support.utils.gp.GlobalPlatform import gp
 from binascii import hexlify, unhexlify
@@ -33,7 +33,10 @@ class Register(Resource):
             }
             return message,400
         
-        user = User(username=args['username'], password=args['password'], mobile=args['mobile'])
+        user = User()
+        user.username=args['username'] 
+        user.password=args['password'] 
+        user.mobile=args['mobile']
         db.session.add(user)
         db.session.commit()
         message = {
@@ -78,7 +81,8 @@ class InitCap(Resource):
         self.reqparse.add_argument('cplc', type=str, location='json')
         self.reqparse.add_argument('initdata',type=str, location='json')
         super(InitCap, self).__init__()
-        
+
+    @auth.login_required    
     def post(self):
         args = self.reqparse.parse_args()
         cplc = BlackList.query.filter(BlackList.cplc==args['cplc']).first()
@@ -113,7 +117,7 @@ class InstallCap(Resource):
         super(InstallCap, self).__init__()
         
     def post(self):
-        args = self.reqparse.pars_args()
+        args = self.reqparse.parse_args()
         cplc = BlackList.query.filter_by(_cplc=args['cplc']).first()
         if cplc:
             message = {
@@ -126,7 +130,7 @@ class InstallCap(Resource):
                     "message": "please initcap at first"
                 }
             return message,400 
-        elif args[sw] != '9000':
+        elif args['sw'] != '9000':
             message = {
                         "message": "init Error"
                     }
@@ -145,10 +149,9 @@ class InstallCap(Resource):
             else:
                 capList = CapPkgInfo.query.filter_by(cap_aid=args["app"]).order_by(CapPkgInfo.cap_version.desc()).first()
                 APDU = capList.split(',')[:-1]
-                gp = gp()
                 apduList = []
                 for subAPDU in APDU:
-                    temp = gp.adpumac(session["initdata"], subAPDU, session["KMAC"])
+                    temp = gp.apdumac(session["initdata"], subAPDU, session["KMAC"])
                     apduList.append(temp)
                     
                 seri_data = {
@@ -162,13 +165,13 @@ class DeleteCap(Resource):
     
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self. reqparse.add_argument('cplc', type=str, location='json')
+        self.reqparse.add_argument('cplc', type=str, location='json')
         self.reqparse.add_argument('app', type=str, location='json')
         self.reqparse.add_argument('sw', type=str, location='json')
         super(DeleteCap, self).__init__()
         
     def post(self):
-        args = self.reqparse.parsr_args()
+        args = self.reqparse.parse_args()
         cplc = BlackList.query.filter_by(_cplc=args['cplc']).first()
         if cplc:
             message = {
@@ -181,7 +184,7 @@ class DeleteCap(Resource):
                     "message": "please initcap at first"
                 }
             return message,400 
-        elif args[sw] != '9000':
+        elif args['sw'] != '9000':
             message = {
                         "message": "init Error"
                     }
@@ -189,7 +192,6 @@ class DeleteCap(Resource):
         cplc = CapPerso.query.filter_by(cplc=args['cplc'])
         for item_cplc in cplc:
             if item_cplc.cap_pkg_info == args["app"]&item_cplc.status == 1:
-                gp = gp()
                 apduList = []
                 command = gp.deleteCommand(P1='00', P2='80', AID=args['app'],random=session['initdata'], DES3key=session['KMAC'])
                 apduList.append(command)
