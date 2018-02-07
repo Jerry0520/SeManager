@@ -1,0 +1,234 @@
+{
+     // List of paths to libraries and the like that need to be imported by auto complete engine. E.g. when using Google App SDK, the paths are not in system path, hence need to be added into this list.
+  "python.autoComplete.extraPaths": ["${workspaceFolder}\\.env\\Lib/site-packages"],
+
+  // Comma delimited list of modules preloaded to speed up Auto Complete (e.g. add Numpy, Pandas, etc, items slow to load when autocompleting).
+  "python.autoComplete.preloadModules": ["${workspaceFolder}\\.env\\Lib/site-packages"],
+
+  // Whether to check if Python is installed.
+  "python.disableInstallationCheck": false,
+
+  // Do not display a prompt to install these features
+  "python.disablePromptForFeatures": [],
+
+  // Absolute path to a file containing environment variable definitions.
+  "python.envFile": "${workspaceFolder}\\.env",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.formatting.autopep8Args": [],
+
+  // Path to autopep8, you can use a custom version of autopep8 by modifying this setting to include the full path.
+  "python.formatting.autopep8Path": "autopep8",
+
+  // Provider for formatting. Possible options include 'autopep8' and 'yapf'.
+  "python.formatting.provider": "autopep8",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.formatting.yapfArgs": [],
+
+  // Path to yapf, you can use a custom version of yapf by modifying this setting to include the full path.
+  "python.formatting.yapfPath": "yapf",
+
+  // Whether to install Python modules globally.
+  "python.globalModuleInstallation": false,
+
+  // Path to directory containing the Jedi library (this path will contain the 'Jedi' sub directory).
+  "python.jediPath": "",
+
+  // Whether to lint Python files.
+  "python.linting.enabled": true,
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.linting.flake8Args": [],
+
+  // Severity of Flake8 message type 'E'.
+  "python.linting.flake8CategorySeverity.E": "Error",
+
+  // Severity of Flake8 message type 'F'.
+  "python.linting.flake8CategorySeverity.F": "Error",
+
+  // Severity of Flake8 message type 'W'.
+  "python.linting.flake8CategorySeverity.W": "Warning",
+
+  // Whether to lint Python files using flake8
+  "python.linting.flake8Enabled": false,
+
+  // Path to flake8, you can use a custom version of flake8 by modifying this setting to include the full path.
+  "python.linting.flake8Path": "flake8",
+
+  // Patterns used to exclude files or folders from being linted.
+  "python.linting.ignorePatterns": [
+    ".vscode/*.py",
+    "**/site-packages/**/*.py"
+  ],
+
+  // Whether to lint Python files when saved.
+  "python.linting.lintOnSave": true,
+
+  // Controls the maximum number of problems produced by the server.
+  "python.linting.maxNumberOfProblems": 100,
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.linting.mypyArgs": [
+    "--ignore-missing-imports",
+    "--follow-imports=silent"
+  ],
+
+  // Severity of Mypy message type 'Error'.
+  "python.linting.mypyCategorySeverity.error": "Error",
+
+  // Severity of Mypy message type 'Note'.
+  "python.linting.mypyCategorySeverity.note": "Information",
+
+  // Whether to lint Python files using mypy.
+  "python.linting.mypyEnabled": false,
+
+  // Path to mypy, you can use a custom version of mypy by modifying this setting to include the full path.
+  "python.linting.mypyPath": "mypy",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.linting.pep8Args": [],
+
+  // Severity of Pep8 message type 'E'.
+  "python.linting.pep8CategorySeverity.E": "Error",
+
+  // Severity of Pep8 message type 'W'.
+  "python.linting.pep8CategorySeverity.W": "Warning",
+
+  // Whether to lint Python files using pep8
+  "python.linting.pep8Enabled": false,
+
+  // Path to pep8, you can use a custom version of pep8 by modifying this setting to include the full path.
+  "python.linting.pep8Path": "pep8",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.linting.prospectorArgs": [],
+
+  // Whether to lint Python files using prospector.
+  "python.linting.prospectorEnabled": false,
+
+  // Path to Prospector, you can use a custom version of prospector by modifying this setting to include the full path.
+  "python.linting.prospectorPath": "prospector",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.linting.pydocstyleArgs": [],
+
+  // Whether to lint Python files using pydocstyle
+  "python.linting.pydocstyleEnabled": false,
+
+  // Path to pydocstyle, you can use a custom version of pydocstyle by modifying this setting to include the full path.
+  "python.linting.pydocstylePath": "pydocstyle",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.linting.pylamaArgs": [],
+
+  // Whether to lint Python files using pylama.
+  "python.linting.pylamaEnabled": false,
+
+  // Path to pylama, you can use a custom version of pylama by modifying this setting to include the full path.
+  "python.linting.pylamaPath": "pylama",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.linting.pylintArgs": [],
+
+  // Severity of Pylint message type 'Convention/C'.
+  "python.linting.pylintCategorySeverity.convention": "Information",
+
+  // Severity of Pylint message type 'Error/E'.
+  "python.linting.pylintCategorySeverity.error": "Error",
+
+  // Severity of Pylint message type 'Fatal/F'.
+  "python.linting.pylintCategorySeverity.fatal": "Error",
+
+  // Severity of Pylint message type 'Refactor/R'.
+  "python.linting.pylintCategorySeverity.refactor": "Hint",
+
+  // Severity of Pylint message type 'Warning/W'.
+  "python.linting.pylintCategorySeverity.warning": "Warning",
+
+  // Whether to lint Python files using pylint.
+  "python.linting.pylintEnabled": true,
+
+  // Path to Pylint, you can use a custom version of pylint by modifying this setting to include the full path.
+  "python.linting.pylintPath": "pylint",
+
+  // Whether to run Pylint with minimal set of rules.
+  "python.linting.pylintUseMinimalCheckers": true,
+
+  // Path to Python, you can use a custom version of Python by modifying this setting to include the full path.
+  "python.pythonPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.sortImports.args": [],
+
+  // Path to isort script, default using inner version
+  "python.sortImports.path": "",
+
+  // Activate Python Environment in Terminal created using the Extension.
+  "python.terminal.activateEnvironment": true,
+
+  // When executing a file in the terminal, whether to use execute in the file's directory, instead of the current open folder.
+  "python.terminal.executeInFileDir": false,
+
+  // Python launch arguments to use when executing a file in the terminal.
+  "python.terminal.launchArgs": [],
+
+  // Port number used for debugging of unittests.
+  "python.unitTest.debugPort": 3000,
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.unitTest.nosetestArgs": [],
+
+  // Path to nosetests, you can use a custom version of nosetests by modifying this setting to include the full path.
+  "python.unitTest.nosetestPath": "nosetests",
+
+  // Whether to enable or disable unit testing using nosetests.
+  "python.unitTest.nosetestsEnabled": false,
+
+  // Where to prompt to configure a test framework if potential tests directories are discovered.
+  "python.unitTest.promptToConfigure": true,
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.unitTest.pyTestArgs": [],
+
+  // Whether to enable or disable unit testing using pytest.
+  "python.unitTest.pyTestEnabled": false,
+
+  // Path to pytest (pytest), you can use a custom version of pytest by modifying this setting to include the full path.
+  "python.unitTest.pyTestPath": "pytest",
+
+  // Arguments passed in. Each argument is a separate item in the array.
+  "python.unitTest.unittestArgs": [
+    "-v",
+    "-s",
+    ".",
+    "-p",
+    "*test*.py"
+  ],
+
+  // Whether to enable or disable unit testing using unittest.
+  "python.unitTest.unittestEnabled": false,
+
+  // Path to folder with a list of Virtual Environments (e.g. ~/.pyenv, ~/Envs, ~/.virtualenvs).
+  "python.venvPath": "${workspaceFolder}/.env",
+
+  // Fully qualilified path to the ctags executable (else leave as ctags, assuming it is in current path).
+  "python.workspaceSymbols.ctagsPath": "ctags",
+
+  // Set to 'false' to disable Workspace Symbol provider using ctags.
+  "python.workspaceSymbols.enabled": true,
+
+  // Pattern used to exclude files and folders from ctags See http://ctags.sourceforge.net/ctags.html.
+  "python.workspaceSymbols.exclusionPatterns": [
+    "**/site-packages/**"
+  ],
+
+  // Whether to re-build the tags file on when changes made to python files are saved.
+  "python.workspaceSymbols.rebuildOnFileSave": true,
+
+  // Whether to re-build the tags file on start (defaults to true).
+  "python.workspaceSymbols.rebuildOnStart": true,
+
+  // Fully qualified path to tag file (exuberant ctag file), used to provide workspace symbols.
+  "python.workspaceSymbols.tagFilePath": "${workspaceFolder}/.vscode/tags",
+}
