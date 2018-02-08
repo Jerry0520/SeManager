@@ -20,13 +20,18 @@ class Config:
 
 class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.test.sqlite')
+    WTF_CSRF_ENABLED = False
+    
+class DevelopingConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.dev.sqlite')
     
 class ProductConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')   
 
 config = {
     'testing':TestingConfig,
+    'developing':DevelopingConfig,
     'product':ProductConfig,
-    'default':TestingConfig,
+    'default':DevelopingConfig,
 } 
     

@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from datetime import datetime
 from .. import db
+from support.utils.contants import dict_isd_key, dict_cap_status,dict_perso_status
 
     
 class CapPkgInfo(db.Model):

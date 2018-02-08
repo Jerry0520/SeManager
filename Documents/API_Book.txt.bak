@@ -9,4 +9,33 @@ OUTPUT:
 {
     "APDUList": "84820100105e67db213e4afb03ebb2fefb3b719931"
 }
+--------------------------------------------------------------------------------------------------------------------------------------
+
+POST:
+http://127.0.0.1:5000/api/register
+INPUT:
+{
+	"username":"jerry",
+	"mobile":"15618675551",
+	"password":"12345678"
+}
+OUTPUT:
+{
+    "username": "jerry",
+    "mobile": "15618675551"
+}
+--------------------------------------------------------------------------------------------------------------------------------------
+
+POST:
+http://127.0.0.1:5000/api/login
+INPUT:
+{
+	"username":"jerry",
+	"password":"12345678"
+}
+OUTPUT:
+{
+    "token": "eyJhbGciOiJIUzI1NiIsImlhdCI6MTUxNzk5MjIyNCwiZXhwIjoxNTE3OTk4MjI0fQ.eyJ1c2VybmFtZSI6ImplcnJ5In0.vqdeWegvjsCPoklcroacjV3YhyOpPqCrvkYGZQSgEKA"
+}
+--------------------------------------------------------------------------------------------------------------------------------------
 
