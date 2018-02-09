@@ -118,13 +118,16 @@ class InstallCap(Resource):
         
     def post(self):
         args = self.reqparse.parse_args()
-        cplc = BlackList.query.filter_by(_cplc=args['cplc']).first()
-        if cplc:
+        cplc = BlackList.query.filter_by(cplc=args['cplc']).first()
+
+        try:
+            session["cplc"]
+        except:
             message = {
-                "message": "in Blacklist"
-            }
-            return message,400
-        
+                    "message": "please login at first"
+                }
+            return message,401 
+
         if args['cplc'] != session["cplc"]:
             message = {
                     "message": "please initcap at first"
@@ -146,18 +149,23 @@ class InstallCap(Resource):
                 elif item_cplc.status == 2:
                     #个人化异常，走异常流程，待完善
                     return 0
-            else:
-                capList = CapPkgInfo.query.filter_by(cap_aid=args["app"]).order_by(CapPkgInfo.cap_version.desc()).first()
-                APDU = capList.split(',')[:-1]
-                apduList = []
-                for subAPDU in APDU:
-                    temp = gp.apdumac(session["initdata"], subAPDU, session["KMAC"])
-                    apduList.append(temp)
-                    
-                seri_data = {
-                    "APDUList": apduList
-                }
-                return seri_data, 200
+            
+        capList = CapPkgInfo.query.filter_by(cap_aid=args["app"]).order_by(CapPkgInfo.cap_version.desc()).first()
+        if capList == None:
+            message = {
+                        "message": "No such cap"
+                    }
+            return message,400
+        APDU = capList.cap_perso.split(',')[:-1]
+        apduList = []
+        for subAPDU in APDU:
+            temp = gp.apdumac(session["initdata"], subAPDU, session["KMAC"])
+            apduList.append(temp)
+            
+        seri_data = {
+            "APDUList": apduList
+        }
+        return seri_data, 200
                 
                 
 
@@ -172,12 +180,14 @@ class DeleteCap(Resource):
         
     def post(self):
         args = self.reqparse.parse_args()
-        cplc = BlackList.query.filter_by(_cplc=args['cplc']).first()
-        if cplc:
+        cplc = BlackList.query.filter_by(cplc=args['cplc']).first()
+        try:
+            session["cplc"]
+        except:
             message = {
-                "message": "in Blacklist"
-            }
-            return message,400
+                    "message": "please login at first"
+                }
+            return message,401 
         
         if args['cplc'] != session["cplc"]:
             message = {
@@ -190,20 +200,23 @@ class DeleteCap(Resource):
                     }
             return message,400            
         cplc = CapPerso.query.filter_by(cplc=args['cplc'])
+        apduList = []
         for item_cplc in cplc:
-            if item_cplc.cap_pkg_info == args["app"]&item_cplc.status == 1:
-                apduList = []
+            if item_cplc.cap_aid == args["app"] and item_cplc.status == '1':
                 command = gp.deleteCommand(P1='00', P2='80', AID=args['app'],random=session['initdata'], DES3key=session['KMAC'])
                 apduList.append(command)
-                seri_data = {
+                break
+
+        if apduList != []:
+            seri_data = {
                     "APDUList": apduList
                 }
-                return seri_data, 200                
-            else:
-                message = {
-                    "message": "个人化状态异常"
-                }
-                return message,400
+            return seri_data, 200               
+        else:
+            message = {
+                "message": "无此应用"
+            }
+            return message,400
                     
 
 """

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 55f40a164e8d
+Revision ID: 42790a0f4afd
 Revises: 
-Create Date: 2018-02-08 14:27:29.867454
+Create Date: 2018-02-09 16:18:54.673601
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '55f40a164e8d'
+revision = '42790a0f4afd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -42,7 +42,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('cap_name', sa.String(length=100), nullable=False),
     sa.Column('cap_version', sa.String(length=20), nullable=False),
-    sa.Column('cap_perso', sa.String(length=1000), nullable=False),
+    sa.Column('cap_perso', sa.Text(), nullable=False),
     sa.Column('cap_aid', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
@@ -88,7 +88,7 @@ def upgrade():
     )
     op.create_table('whitelist',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('_cplc', sa.String(length=50), nullable=False),
+    sa.Column('cplc', sa.String(length=50), nullable=False),
     sa.Column('description', sa.String(length=200), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )

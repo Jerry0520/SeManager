@@ -9,11 +9,13 @@ from test_data import *
 
 
 class ApiTestCase(unittest.TestCase):
-    def setUp(self):
+
+    @classmethod
+    def setUpClass(cls):
         print("Init test！")
-        self.app = create_app('testing')
-        self.app_context = self.app.app_context()
-        self.app_context.push()
+        cls.app = create_app('testing')
+        cls.app_context = cls.app.app_context()
+        cls.app_context.push()
         db.create_all()
         cap1 = CapPkgInfo(cap_name=dict_cap1['cap_name'], cap_version=dict_cap1['cap_version'], cap_perso=dict_cap1['cap_perso'], cap_aid=dict_cap1['cap_aid'])
         cap2 = CapPkgInfo(cap_name=dict_cap2['cap_name'], cap_version=dict_cap2['cap_version'], cap_perso=dict_cap2['cap_perso'], cap_aid=dict_cap2['cap_aid'])
@@ -23,13 +25,14 @@ class ApiTestCase(unittest.TestCase):
         cfg1 = CapCfg(cap_aid=dict_cfg1['cap_aid'], status=dict_cfg1['status'])
         db.session.add_all([cap1, cap2, cap3, perso1, black1, cfg1])
         db.session.commit()
-        self.client = self.app.test_client()
+        cls.client = cls.app.test_client()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
         print("close worker!")
         db.session.remove()
         db.drop_all()
-        self.app_context.pop()
+        cls.app_context.pop()
 
     #check_data
     def test_01(self):
@@ -72,21 +75,53 @@ class ApiTestCase(unittest.TestCase):
                                         "username":"Andy",
                                         "password":"12345678",
                                     }))
-        print(response.data)
         self.assertTrue(response.status_code == 200)
-        self.token = response.data.decode()['token']
-        self.assertIsNotNone(self.token)
+        token = json.loads(response.data.decode())['token']
+        globals()['token'] = token
+        self.assertIsNotNone(token)
                                     
 
     #check init key
     def test_04(self):
         print("04:check init key!")
+        global token
+        response = self.client.post(url_for('restful.initcap'),
+                                    headers={
+                                        'Authorization':'Bearer '+ token,
+                                        'Content-Type':'application/json' 
+                                        },
+                                    data=json.dumps({
+                                        "cplc":"12345678123456781234567822345678",
+	                                    "initdata":"0000000000000000000020020005765C6F76257B31C479DAF06699B7"
+                                    }))
+        self.assertTrue(response.status_code == 400)
+        message = json.loads(response.data.decode())['message']
+        self.assertEqual(message, 'in Blacklist')
+        blackList = BlackList.query.filter_by(cplc="12345678123456781234567822345678").first()
+        db.session.delete(blackList)
+        db.session.commit()
+        response = self.client.post(url_for('restful.initcap'),
+                                    headers={
+                                        'Authorization':'Bearer '+ token,
+                                        'Content-Type':'application/json' 
+                                        },
+                                    data=json.dumps({
+                                        "cplc":"12345678123456781234567822345678",
+	                                    "initdata":"0000000000000000000020020005765C6F76257B31C479DAF06699B7"
+                                    }))
+        self.assertTrue(response.status_code == 200)
+        print(response.headers)
+        message = json.loads(response.data.decode())['APDUList']
+        self.assertIsNotNone(message)
+        
 
     #check down cap
     def test_05(self):
         print("04:check down cap!")
 
+
     #check delete cap
-    def test_04(self):
+    def test_06(self):
         print("04:check delete cap!")
+
         

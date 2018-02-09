@@ -111,11 +111,11 @@ class WhiteListView(ModelView):
     # Override displayed fields
     column_labels = {
     'id':'ID',
-    '_cplc':'终端标识',
+    'cplc':'终端标识',
     'description':'描述',
     }
-    column_filters = ('id','_cplc','description')
-    column_list = ('id','_cplc','description')
+    column_filters = ('id','cplc','description')
+    column_list = ('id','cplc','description')
 
     def __init__(self, session, **kwargs):
         # You can pass name and other parameters if you want to

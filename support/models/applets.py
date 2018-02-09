@@ -10,7 +10,7 @@ class CapPkgInfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cap_name = db.Column(db.String(100), nullable=False)
     cap_version = db.Column(db.String(20), nullable=False)
-    cap_perso = db.Column(db.String(1000), nullable=False)
+    cap_perso = db.Column(db.Text, nullable=False)
     cap_aid = db.Column(db.String(100))
     
 class CapPerso(db.Model):
@@ -25,7 +25,7 @@ class BlackList(db.Model):
     __tablename__ = 'blacklist'
     
     id = db.Column(db.Integer, primary_key=True)
-    cplc = db.Column(db.String(50), nullable=False)
+    cplc = db.Column(db.String(50), nullable=False, default='')
     description = db.Column(db.String(200))
     
     
@@ -33,7 +33,7 @@ class WhiteList(db.Model):
     __tablename__ = 'whitelist'
     
     id = db.Column(db.Integer, primary_key=True)
-    _cplc = db.Column(db.String(50), nullable=False)
+    cplc = db.Column(db.String(50), nullable=False, default='')
     description = db.Column(db.String(200))
     
     
