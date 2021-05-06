@@ -10,7 +10,7 @@ colorama==0.3.9
 Flask==0.12.2
 Flask-Admin==1.5.0
 Flask-BabelEx==0.9.3
-Flask-Cors==3.0.3
+Flask-Cors==3.0.9
 Flask-Excel==0.0.7
 Flask-HTTPAuth==3.2.3
 Flask-Login==0.4.1
